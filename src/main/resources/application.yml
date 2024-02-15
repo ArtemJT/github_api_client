@@ -1,3 +1,12 @@
 # Server configuration
 server:
   port: 8089
+
+templates:
+  exception:
+    repositoryNotFound: "Repositories not found."
+    notForkRepositoryNotFound: "Not fork repositories not found."
+    mediaTypeNotAccept: "Accepted media type is 'application/json'"
+    gHFileNotFound:
+      mustBeNotEmpty: "Parameter 'userName' must not be empty"
+      userNotFound: "Not found user with given UserName="
