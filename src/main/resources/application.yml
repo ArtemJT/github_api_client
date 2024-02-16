@@ -6,7 +6,7 @@ templates:
   exception:
     repositoryNotFound: "Repositories not found."
     notForkRepositoryNotFound: "Not fork repositories not found."
+    branchNotFound: "Branches not found."
+    mustBeNotEmpty: "Parameter 'userName' must not be empty"
+    userNotFound: "Not found user with given UserName="
     mediaTypeNotAccept: "Accepted media type is 'application/json'"
-    gHFileNotFound:
-      mustBeNotEmpty: "Parameter 'userName' must not be empty"
-      userNotFound: "Not found user with given UserName="
