@@ -1,7 +1,7 @@
 package com.example.github_api_client.web;
 
+import com.example.github_api_client.dto.GitHubRepositoryDto;
 import com.example.github_api_client.service.GitHubApiServiceBean;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Artem Kovalov on 13.02.2024
@@ -20,17 +21,16 @@ import java.io.IOException;
 public class GitHubApiController {
 
     private final GitHubApiServiceBean gitHubApiServiceBean;
-    private final ObjectMapper mapper;
 
     @GetMapping("/repos/not-fork")
     @ResponseStatus(HttpStatus.OK)
-    public String getNotForkRepos(@RequestParam String userName) throws IOException {
-        return mapper.writeValueAsString(gitHubApiServiceBean.gitHubReposNotFork(userName));
+    public List<GitHubRepositoryDto> getNotForkRepos(@RequestParam String userName) throws IOException {
+        return gitHubApiServiceBean.gitHubReposNotFork(userName);
     }
 
     @GetMapping("/repos")
     @ResponseStatus(HttpStatus.OK)
-    public String getRepos(@RequestParam String userName) throws IOException {
-        return mapper.writeValueAsString(gitHubApiServiceBean.gitHubRepos(userName));
+    public List<GitHubRepositoryDto> getRepos(@RequestParam String userName) throws IOException {
+        return gitHubApiServiceBean.gitHubRepos(userName);
     }
 }
