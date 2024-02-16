@@ -2,6 +2,7 @@ package com.example.github_api_client.config;
 
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.connector.GitHubConnector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +17,7 @@ public class GitHubApiConfig {
     @Bean
     public GitHub gitHub() throws IOException {
         return new GitHubBuilder()
+                .withConnector(GitHubConnector.DEFAULT)
                 .build();
     }
 }
