@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,13 +23,13 @@ public class GitHubApiController {
 
     @GetMapping("/repos/not-fork")
     @ResponseStatus(HttpStatus.OK)
-    public List<GitHubRepositoryDto> getNotForkRepos(@RequestParam String userName) throws IOException {
-        return gitHubApiServiceBean.gitHubReposNotFork(userName);
+    public List<GitHubRepositoryDto> getNotForkRepositories(@RequestParam String userName) {
+        return gitHubApiServiceBean.getGHNotForkRepositoriesList(userName);
     }
 
     @GetMapping("/repos")
     @ResponseStatus(HttpStatus.OK)
-    public List<GitHubRepositoryDto> getRepos(@RequestParam String userName) throws IOException {
-        return gitHubApiServiceBean.gitHubRepos(userName);
+    public List<GitHubRepositoryDto> getRepositories(@RequestParam String userName) {
+        return gitHubApiServiceBean.getGHRepositoriesList(userName);
     }
 }
