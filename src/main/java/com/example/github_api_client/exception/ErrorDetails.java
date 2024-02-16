@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
  * @author Artem Kovalov on 14.02.2024
  */
 @Builder
-public record ErrorDetails(HttpStatus status, String message) {
+public record ErrorDetails(Integer status, String message) {
 
     public static ResponseEntity<ErrorDetails> getResponseEntity(String message, HttpStatus status) {
         ErrorDetails errorDetails = ErrorDetails.builder()
-                .status(status)
+                .status(status.value())
                 .message(message)
                 .build();
         return new ResponseEntity<>(errorDetails, status);
