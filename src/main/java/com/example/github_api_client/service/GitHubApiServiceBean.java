@@ -1,15 +1,20 @@
 package com.example.github_api_client.service;
 
 import com.example.github_api_client.dto.GitHubRepositoryDto;
-import com.example.github_api_client.mapper.GitHubRepoMapper;
+import com.example.github_api_client.exception.custom_exceptions.GHNotForkRepositoryNotFoundException;
+import com.example.github_api_client.exception.custom_exceptions.GHRepositoryNotFoundException;
+import com.example.github_api_client.exception.custom_exceptions.GHUserNotFoundException;
+import com.example.github_api_client.mapper.GitHubRepoDtoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Artem Kovalov on 13.02.2024
@@ -20,19 +25,41 @@ import java.util.List;
 public class GitHubApiServiceBean implements GitHubApiService {
 
     private final GitHub gitHub;
+    private final GitHubRepoDtoMapper repoMapper;
 
     @Override
-    public GHUser getGHUser(String userName) throws IOException {
-        return gitHub.getUser(userName);
+    public GHUser getGHUser(String userName) {
+        try {
+            return gitHub.getUser(userName);
+        } catch (IOException e) {
+            throw new GHUserNotFoundException();
+        }
     }
 
     @Override
-    public List<GitHubRepositoryDto> gitHubRepos(String userName) throws IOException {
-        return GitHubRepoMapper.makeGitHubRepositoryDtoList(getGHUser(userName).getRepositories());
+    public Map<String, GHRepository> getGHRepositories(String userName) {
+        try {
+            Map<String, GHRepository> repositories = getGHUser(userName).getRepositories();
+            if (repositories.isEmpty()) {
+                throw new GHRepositoryNotFoundException();
+            }
+            return repositories;
+        } catch (IOException e) {
+            throw new GHRepositoryNotFoundException();
+        }
     }
 
     @Override
-    public List<GitHubRepositoryDto> gitHubReposNotFork(String userName) throws IOException {
-        return gitHubRepos(userName).stream().filter(repo -> !repo.isFork()).toList();
+    public List<GitHubRepositoryDto> getGHRepositoriesList(String userName) {
+        return repoMapper.makeGitHubRepositoryDtoList(getGHRepositories(userName));
+    }
+
+    @Override
+    public List<GitHubRepositoryDto> getGHNotForkRepositoriesList(String userName) {
+        List<GitHubRepositoryDto> repositoryList = getGHRepositoriesList(userName).stream().filter(repo -> !repo.isFork()).toList();
+        if (repositoryList.isEmpty()) {
+            throw new GHNotForkRepositoryNotFoundException();
+        }
+        return repositoryList;
     }
 }
