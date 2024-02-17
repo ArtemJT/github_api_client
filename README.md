@@ -1,6 +1,8 @@
-Acceptance criteria:
+## github_api_client
 
-As an api consumer, given username and header “Accept: application/json”, I would like to list all his github repositories, which are not forks. Information, which I require in the response, is:
+### Acceptance criteria:
+
+An api consumer, given username and header “Accept: application/json”, will get a list of all his github repositories, which are not forks. Information, which required in the response, is:
 
 > Repository Name
 
@@ -8,12 +10,27 @@ As an api consumer, given username and header “Accept: application/json”, I 
 
 For each branch it’s name and last commit sha. 
 
-As an api consumer, given not existing github user, I would like to receive 404 response in such a format:
+An api consumer, given not existing github user, will receive 404 response in such a format:
 
-{
+	{
 
-    “status”: ${responseCode}
+    	“status”: ${responseCode}
     
-    “message”: ${whyHasItHappened}
+    	“message”: ${whyHasItHappened}
     
-}
+	}
+
+#### For connection to GitHub, used recommended library GitHub API for Java:
+
+    <dependency>
+        <groupId>org.kohsuke</groupId>
+        <artifactId>github-api</artifactId>
+        <version>1.318</version>
+    </dependency>
+
+
+#### Links:
+
+https://github-api.kohsuke.org/
+
+https://docs.github.com/en/rest/using-the-rest-api/libraries-for-the-rest-api?apiVersion=2022-11-28
