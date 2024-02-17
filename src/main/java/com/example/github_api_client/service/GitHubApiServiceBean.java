@@ -27,6 +27,12 @@ public class GitHubApiServiceBean implements GitHubApiService {
     private final GitHub gitHub;
     private final GitHubRepoDtoMapper repoMapper;
 
+    /**
+     * The method get User by given UserName
+     *
+     * @param userName
+     * @return GHUser
+     */
     @Override
     public GHUser getGHUser(String userName) {
         try {
@@ -36,6 +42,12 @@ public class GitHubApiServiceBean implements GitHubApiService {
         }
     }
 
+    /**
+     * The method get User's repositories by given UserName
+     *
+     * @param userName
+     * @return Map<String, GHRepository>
+     */
     @Override
     public Map<String, GHRepository> getGHRepositories(String userName) {
         try {
@@ -49,14 +61,27 @@ public class GitHubApiServiceBean implements GitHubApiService {
         }
     }
 
+    /**
+     * The method make a list of all repositories. Based on GitHubRepositoryDto
+     *
+     * @param userName
+     * @return List<GitHubRepositoryDto>
+     */
     @Override
     public List<GitHubRepositoryDto> getGHRepositoriesList(String userName) {
         return repoMapper.makeGitHubRepositoryDtoList(getGHRepositories(userName));
     }
 
+    /**
+     * The method make a list of all not-fork repositories. Based on GitHubRepositoryDto
+     *
+     * @param userName
+     * @return List<GitHubRepositoryDto>
+     */
     @Override
     public List<GitHubRepositoryDto> getGHNotForkRepositoriesList(String userName) {
-        List<GitHubRepositoryDto> repositoryList = getGHRepositoriesList(userName).stream().filter(repo -> !repo.isFork()).toList();
+        List<GitHubRepositoryDto> repositoryList = getGHRepositoriesList(userName).stream()
+                .filter(repo -> !repo.isFork()).toList();
         if (repositoryList.isEmpty()) {
             throw new GHNotForkRepositoryNotFoundException();
         }
